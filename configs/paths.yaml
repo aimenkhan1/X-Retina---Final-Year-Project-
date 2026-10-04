@@ -1,0 +1,8 @@
+# Paths. Override at runtime with env vars XRETINA_DRIVE_ROOT / XRETINA_RAW_DIR
+# (the Colab bootstrap cell sets XRETINA_DRIVE_ROOT automatically).
+drive_root: /content/drive/MyDrive/XRetina_Shared   # shared Drive folder (shortcut in each member's My Drive)
+local_raw_dir: /content/data/raw                     # raw Kaggle downloads: local Colab disk, NOT Drive
+processed_subdir: processed
+splits_subdir: splits
+checkpoints_subdir: checkpoints
+outputs_subdir: outputs

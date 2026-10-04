@@ -1,0 +1,16 @@
+# DEFAULTS proposed to the team - pending confirmation. Baseline = plain EfficientNet-B4 (per [11]).
+seed: 42
+model:
+  backbone: efficientnet_b4
+  pretrained: true
+  num_classes: 5
+train:
+  img_size: 380        # EfficientNet-B4 native resolution
+  batch_size: 16
+  mixed_precision: true
+  epochs: 30
+  lr: 1.0e-4
+  weight_decay: 1.0e-4
+  scheduler: cosine
+  early_stopping_patience: 7
+  loss: cross_entropy  # later: focal | cross_entropy + smote

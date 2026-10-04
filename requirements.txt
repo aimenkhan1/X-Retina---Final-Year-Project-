@@ -1,0 +1,17 @@
+# X-Retina FYP-I dependencies
+# Colab already ships torch, torchvision, numpy, pandas, scikit-learn, matplotlib.
+# Do NOT reinstall torch on Colab. On a local machine also install:
+#   torch torchvision numpy pandas scikit-learn matplotlib
+timm>=1.0
+opencv-python-headless>=4.9
+albumentations>=1.4
+imbalanced-learn>=0.12
+pyyaml>=6.0
+kaggle>=1.6
+tqdm
+seaborn
+
+# FYP-II only (not needed yet):
+# grad-cam>=1.5
+# fastapi
+# uvicorn

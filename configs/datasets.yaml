@@ -1,0 +1,17 @@
+# Dataset sources, taken from the proposal's reference list.
+# NOTE: Kaggle mirrors are unverified - confirm contents/size when running notebook 01.
+aptos2019:
+  kaggle_slug: mariaherrerot/aptos2019
+  role: train
+eyepacs:
+  kaggle_slug: dreamer07/eyepacs
+  role: train
+  # Full Kaggle competition data is ~35k train / ~10.9k validation / ~42.7k test images.
+  subset_size: 12000          # DEFAULT (proposed 10-15k) - pending team confirmation
+idrid:
+  kaggle_slug: null           # no link in proposal; FYP-II only (XAI validation)
+  role: xai_validation_fyp2
+messidor2:
+  kaggle_slug: mariaherrerot/messidor2preprocess
+  role: external_test_fyp2    # do not touch in FYP-I
+classes: [No DR, Mild, Moderate, Severe, Proliferative]

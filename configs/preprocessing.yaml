@@ -1,0 +1,10 @@
+# DEFAULTS proposed to the team - pending confirmation.
+seed: 42
+cache_size: 512        # circular-crop + CLAHE + resize, saved to Drive/processed
+clahe:
+  clip_limit: 2.0
+  tile_grid_size: 8
+split:                 # stratified by DR grade
+  train: 0.70
+  val: 0.15
+  test: 0.15

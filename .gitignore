@@ -1,0 +1,35 @@
+# Data and outputs live on Drive / local disk, never in git
+data/*
+!data/README.md
+!data/.gitkeep
+outputs/*
+!outputs/.gitkeep
+
+# Secrets
+kaggle.json
+.env
+*.token
+secrets*
+
+# Model files and archives
+*.pt
+*.pth
+*.ckpt
+*.zip
+*.tar
+*.tar.gz
+
+# Python / notebooks
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+*.egg-info/
+venv/
+.venv/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
