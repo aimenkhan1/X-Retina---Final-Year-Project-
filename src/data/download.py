@@ -45,17 +45,44 @@ def _to_gb(value: float, unit: str) -> float:
     return value * {"KB": 1 / 1024 ** 2, "MB": 1 / 1024, "GB": 1, "TB": 1024}[unit.upper()]
 
 
+
 def dataset_size(slug: str):
-    """Return (listing_line, size_in_gb) from `kaggle datasets list`, or (None, None) if not found."""
+    """Return (listing_line, size_in_gb) from Kaggle's dataset listing."""
     owner, name = slug.split("/")
+
     for extra in (["--user", owner, "-s", name], ["-s", name]):
-        r = subprocess.run([_kaggle_bin(), "datasets", "list"] + extra, capture_output=True, text=True)
+        r = subprocess.run(
+            [_kaggle_bin(), "datasets", "list"] + extra,
+            capture_output=True,
+            text=True
+        )
+
         if r.returncode != 0:
             continue
+
         for line in r.stdout.splitlines():
             if slug.lower() in line.lower():
-                m = re.search(r"(\d+(?:\.\d+)?)\s*(KB|MB|GB|TB)\b", line, re.I)
-                return line.strip(), (_to_gb(float(m.group(1)), m.group(2)) if m else None)
+                # First, try sizes written with units, e.g. 32.9 GB
+                m = re.search(
+                    r"(\d+(?:\.\d+)?)\s*(KB|MB|GB|TB)\b",
+                    line,
+                    re.I
+                )
+
+                if m:
+                    size_gb = _to_gb(float(m.group(1)), m.group(2))
+                    return line.strip(), size_gb
+
+                # Otherwise, detect a plain byte count in the listing
+                parts = line.split()
+
+                for part in parts:
+                    if part.isdigit() and len(part) >= 9:
+                        size_gb = int(part) / (1024 ** 3)
+                        return line.strip(), size_gb
+
+                return line.strip(), None
+
     return None, None
 
 
