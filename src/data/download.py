@@ -47,7 +47,7 @@ def _to_gb(value: float, unit: str) -> float:
 
 
 def dataset_size(slug: str):
-    """Return (listing_line, size_in_gb) from Kaggle's dataset listing."""
+    """Return the Kaggle listing and estimated size in GiB."""
     owner, name = slug.split("/")
 
     for extra in (["--user", owner, "-s", name], ["-s", name]):
@@ -61,27 +61,27 @@ def dataset_size(slug: str):
             continue
 
         for line in r.stdout.splitlines():
-            if slug.lower() in line.lower():
-                # First, try sizes written with units, e.g. 32.9 GB
-                m = re.search(
-                    r"(\d+(?:\.\d+)?)\s*(KB|MB|GB|TB)\b",
-                    line,
-                    re.I
+            if slug.lower() not in line.lower():
+                continue
+
+            # First try a size with an explicit unit.
+            match = re.search(
+                r"(\d+(?:\.\d+)?)\s*(KB|MB|GB|TB)\b",
+                line,
+                re.I
+            )
+
+            if match:
+                return line.strip(), _to_gb(
+                    float(match.group(1)), match.group(2)
                 )
 
-                if m:
-                    size_gb = _to_gb(float(m.group(1)), m.group(2))
-                    return line.strip(), size_gb
+            # Otherwise, parse the long integer representing bytes.
+            for part in line.split():
+                if part.isdigit() and len(part) >= 9:
+                    return line.strip(), int(part) / (1024 ** 3)
 
-                # Otherwise, detect a plain byte count in the listing
-                parts = line.split()
-
-                for part in parts:
-                    if part.isdigit() and len(part) >= 9:
-                        size_gb = int(part) / (1024 ** 3)
-                        return line.strip(), size_gb
-
-                return line.strip(), None
+            return line.strip(), None
 
     return None, None
 
