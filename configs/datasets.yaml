@@ -1,17 +1,33 @@
-# Dataset sources, taken from the proposal's reference list.
-# NOTE: Kaggle mirrors are unverified - confirm contents/size when running notebook 01.
+# Dataset sources for X-Retina.
+# FYP-I uses APTOS 2019 and EyePACS. IDRiD and Messidor-2 are FYP-II only.
+
 aptos2019:
+  source: kaggle                       # downloaded fresh each Colab session (~8 GB, ~80 s)
   kaggle_slug: mariaherrerot/aptos2019
+  raw_subdir: aptos2019                # folder name under /content/data/raw
+  expected_labeled_images: 3662        # verified in notebook 01
   role: train
+
 eyepacs:
-  kaggle_slug: dreamer07/eyepacs
+  source: drive                        # NOT downloaded: read directly from Aiman's Google Drive
+  drive_path: "/content/drive/MyDrive/FYP(Gr2-Fall 2026)/Datasets/eyepacs/archive"
+  # Layout: archive/data/data/*.jpeg  and  archive/trainLabels.csv/trainLabels.csv  (columns: image, level)
+  # The Drive copy holds 16,051 of the 35,126 labeled EyePACS 2015 training images (8,205 patients).
+  # Verified in notebook 01. Report it as "a 16,051-image subset of EyePACS", not the full dataset.
+  expected_labeled_images: 16051
+  subset_size: null                    # null = use ALL available images (decision: rare grades are small)
+  split_by: patient                    # left + right eye of one patient must stay in the same split
   role: train
-  # Full Kaggle competition data is ~35k train / ~10.9k validation / ~42.7k test images.
-  subset_size: 12000          # DEFAULT (proposed 10-15k) - pending team confirmation
+  # Backups if the Drive copy is ever lost (both unverified for our exact needs):
+  #   kaggle_slug: dreamer07/eyepacs   (original proposal link; size and layout unknown)
+  #   kaggle_slug: benjaminwarner/resized-2015-2019-blindness-detection-images  (resized, ~18.6 GB total)
+
 idrid:
-  kaggle_slug: null           # no link in proposal; FYP-II only (XAI validation)
+  kaggle_slug: null                    # no link in proposal; FYP-II only (XAI validation)
   role: xai_validation_fyp2
+
 messidor2:
   kaggle_slug: mariaherrerot/messidor2preprocess
-  role: external_test_fyp2    # do not touch in FYP-I
+  role: external_test_fyp2             # do not touch in FYP-I
+
 classes: [No DR, Mild, Moderate, Severe, Proliferative]
