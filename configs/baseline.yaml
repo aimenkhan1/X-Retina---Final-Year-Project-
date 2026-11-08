@@ -13,4 +13,8 @@ train:
   weight_decay: 1.0e-4
   scheduler: cosine
   early_stopping_patience: 7
+  monitor: qwk         # early stopping + best.pt are chosen on validation QWK
+  grad_clip: 1.0
+  num_workers: 2       # Colab free tier has 2 CPU cores
+  weighted_sampler: false   # natural class mix for the baseline; imbalance methods are Step 4
   loss: cross_entropy  # later: focal | cross_entropy + smote
